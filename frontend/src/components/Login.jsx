@@ -25,6 +25,7 @@ const Login = ({ onLogin }) => {
     <div className="max-w-md mx-auto p-6 bg-white shadow rounded-2xl mt-10">
       <h2 className="text-xl font-bold mb-4">🔐 Login</h2>
       <form onSubmit={handleLogin} className="space-y-4">
+        <h3>Give your gmail</h3>
         <input
           type="email"
           name="email"
@@ -34,6 +35,7 @@ const Login = ({ onLogin }) => {
           className="w-full border p-2 rounded"
           required
         />
+        <h3>Give your password</h3>
         <input
           type="password"
           name="password"

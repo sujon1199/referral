@@ -1,6 +1,7 @@
 import React from "react";
 import QRCode from "react-qr-code";
-
+import MyReferrals from "./MyReferrals";
+import ReferralTree from "./ReferralTree";
 const Dashboard = ({ user }) => {
   const referralLink = `https://yourdomain.com/register?ref=${user.referralCode}`;
 
@@ -46,6 +47,8 @@ const Dashboard = ({ user }) => {
         <p className="text-sm text-gray-600"><strong>User ID:</strong> {user._id}</p>
         <p className="text-sm text-gray-600"><strong>User ID:</strong> {user.referralCode}</p>
       </div>
+      <MyReferrals referralCode={user.referralCode} />
+      <ReferralTree referralTree={user.referralTree} />
     </div>
   );
 };

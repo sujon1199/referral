@@ -90,4 +90,35 @@ const loginUser = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, loginUser };
+//getMyReferrals
+
+const getMyReferrals = async (req, res) => {
+  try {
+    const { refCode } = req.params;
+
+    const users = await User.find({ referredBy: refCode }).select("name email createdAt");
+
+    res.status(200).json(users);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+//getReferralTreeDetails
+
+const getReferralTreeDetails = async (req, res) => {
+  try {
+    const { ids } = req.body;
+
+    const users = await User.find({ _id: { $in: ids } }).select("_id name email");
+
+    // preserve original order
+    const orderedUsers = ids.map((id) => users.find((u) => u._id.toString() === id));
+
+    res.status(200).json(orderedUsers);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+module.exports = { registerUser, loginUser, getMyReferrals, getReferralTreeDetails };
