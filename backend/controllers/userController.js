@@ -48,11 +48,24 @@ const registerUser = async (req, res) => {
       referralTree,
     });
 
+    // Reward system – Add points to 10 uplines
+    if (referralTree.length > 0) {
+      for (let i = 0; i < referralTree.length; i++) {
+        const uplineId = referralTree[i];
+        const point = 10 - i; // Level 1 gets 10, Level 2 gets 9, ..., Level 10 gets 1
+
+        await User.findByIdAndUpdate(uplineId, {
+          $inc: { points: point },
+        });
+      }
+    }
+
     res.status(201).json({
       message: "User registered successfully",
       userId: newUser._id,
       referralCode: newReferralCode,
       referralTree,
+      points: newUser.points,
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -83,6 +96,7 @@ const loginUser = async (req, res) => {
         email: user.email,
         referralCode: user.referralCode,
         referralTree: user.referralTree,
+        points: user.points,
       },
     });
   } catch (err) {
@@ -96,7 +110,9 @@ const getMyReferrals = async (req, res) => {
   try {
     const { refCode } = req.params;
 
-    const users = await User.find({ referredBy: refCode }).select("name email createdAt");
+    const users = await User.find({ referredBy: refCode }).select(
+      "name email createdAt"
+    );
 
     res.status(200).json(users);
   } catch (err) {
@@ -110,10 +126,14 @@ const getReferralTreeDetails = async (req, res) => {
   try {
     const { ids } = req.body;
 
-    const users = await User.find({ _id: { $in: ids } }).select("_id name email");
+    const users = await User.find({ _id: { $in: ids } }).select(
+      "_id name email"
+    );
 
     // preserve original order
-    const orderedUsers = ids.map((id) => users.find((u) => u._id.toString() === id));
+    const orderedUsers = ids.map((id) =>
+      users.find((u) => u._id.toString() === id)
+    );
 
     res.status(200).json(orderedUsers);
   } catch (err) {
@@ -121,4 +141,9 @@ const getReferralTreeDetails = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, loginUser, getMyReferrals, getReferralTreeDetails };
+module.exports = {
+  registerUser,
+  loginUser,
+  getMyReferrals,
+  getReferralTreeDetails,
+};

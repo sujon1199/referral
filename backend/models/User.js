@@ -31,6 +31,10 @@ const userSchema = new mongoose.Schema({
     type: [String], // up to 10 levels
     default: [],
   },
+  points: {
+  type: Number,
+  default: 0,
+},
 });
 
 module.exports = mongoose.model("User", userSchema);

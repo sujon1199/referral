@@ -7,17 +7,23 @@ const Dashboard = ({ user }) => {
 
   return (
     <div className="max-w-4xl mx-auto p-6">
-      <h2 className="text-2xl font-bold mb-6 text-center">👤 Welcome, {user.name}!</h2>
+      <h2 className="text-2xl font-bold mb-6 text-center">
+        👤 Welcome, {user.name}!
+      </h2>
 
       {/* Referral Code + QR */}
       <div className="bg-white shadow rounded-2xl p-6 mb-6">
         <h3 className="text-lg font-semibold text-gray-700 mb-2">
-          📢 Your Referral Code: <span className="text-green-600">{user.referralCode}</span>
+          📢 Your Referral Code:{" "}
+          <span className="text-green-600">{user.referralCode}</span>
         </h3>
         <div className="flex flex-col items-center gap-2">
           <QRCode value={referralLink} />
           <p className="text-sm text-gray-500 break-all">
-            Referral Link: <a href={referralLink} className="text-blue-500 underline">{referralLink}</a>
+            Referral Link:{" "}
+            <a href={referralLink} className="text-blue-500 underline">
+              {referralLink}
+            </a>
           </p>
         </div>
       </div>
@@ -42,11 +48,28 @@ const Dashboard = ({ user }) => {
 
       {/* Profile Info */}
       <div className="bg-white shadow rounded-2xl p-6">
-        <h3 className="text-lg font-semibold text-gray-700 mb-3">📝 Your Profile Info</h3>
-        <p className="text-sm text-gray-600"><strong>Email:</strong> {user.email}</p>
-        <p className="text-sm text-gray-600"><strong>User ID:</strong> {user._id}</p>
-        <p className="text-sm text-gray-600"><strong>User ID:</strong> {user.referralCode}</p>
+        <h3 className="text-lg font-semibold text-gray-700 mb-3">
+          📝 Your Profile Info
+        </h3>
+        <p className="text-sm text-gray-600">
+          <strong>Email:</strong> {user.email}
+        </p>
+        <p className="text-sm text-gray-600">
+          <strong>User ID:</strong> {user._id}
+        </p>
+        <p className="text-sm text-gray-600">
+          <strong>User ID:</strong> {user.referralCode}
+        </p>
       </div>
+      <div className="bg-white shadow rounded-2xl p-6 mt-6">
+        <h3 className="text-lg font-semibold text-gray-700">
+          🎁 Total Referral Points
+        </h3>
+        <p className="text-2xl text-green-600 font-bold">
+          {user.points || 0} Points
+        </p>
+      </div>
+
       <MyReferrals referralCode={user.referralCode} />
       <ReferralTree referralTree={user.referralTree} />
     </div>
